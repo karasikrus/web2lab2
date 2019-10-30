@@ -12,45 +12,59 @@ class LocationWeatherInfo extends React.Component{
         pressure: undefined,
         humidity: undefined,
         wind: undefined,
-        error: undefined
+        error: undefined,
+        isLoading: false
     };
+    
+    testFun = (city) => {
+        console.log(city);
+        this.setState({
+            isLoading: true
+        });
+    }
 
-    getWeather = async (e) => {
-        e.preventDefault();
+    getWeather = async (city) => {
+       // e.preventDefault();
+        if(city===undefined){
+            return null;
+        }
+        this.setState({
+            isLoading: true
+        });
         let url = new URL(ApiUrl);
         url.searchParams.append('appid', ApiKey);
         url.searchParams.append('units', 'metric');
-        url.searchParams.append('q', 'санкт-петербург');
+        url.searchParams.append('q', city);
         let response = await fetch(url);
         const data = await response.json();
         console.log(data);
         this.setState({
+            isLoading: false,
             temp: data.main.temp,
             city: data.name,
             pressure: data.main.pressure,
             humidity: data.main.humidity,
             wind: data.wind.speed
         });
-        console.log(this.state);
-
-        // if (response.status === 200) {
-        //     return await response.json();
-        // } else {
-        //     await response.json()
-        //         .then(json => Promise.reject(json))
-        // }
         return data;
     }
+
+    componentDidMount() {
+        this.getWeather(this.props.city);
+    }
+
 
     render() {
         return(
             <div>
                 <div>
-                    <form onSubmit={this.getWeather}>
-                        <button>show weather in saint-petersburg</button>
-                    </form>
                 </div>
-                {this.state.city &&
+                {this.state.isLoading &&
+                    <div>
+                        <p>Грузится...</p>
+                    </div>
+                }
+                {this.state.city && !this.state.isLoading &&
                     <div>
                         <p>{this.state.city}</p>
                         <p>temperature = {this.state.temp}</p>

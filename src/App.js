@@ -1,11 +1,14 @@
 import React from 'react';
 
 import './components/location-weather-info'
+import './components/default-city-info'
 
 import './App.css';
-import LocationWeatherInfo from "./components/location-weather-info";
+import DefaultCityInfo from "./components/default-city-info";
+import CityList from "./components/city-list";
 
 class  App extends React.Component{
+
 
   render() {
     return(
@@ -13,7 +16,8 @@ class  App extends React.Component{
         <div>
           Работаем
         </div>
-          <LocationWeatherInfo/>
+          <DefaultCityInfo/>
+          <CityList/>
 
       </div>
     )
