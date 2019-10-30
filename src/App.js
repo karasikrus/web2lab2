@@ -13,9 +13,7 @@ class  App extends React.Component{
         <div>
           Работаем
         </div>
-        <div>
           <LocationWeatherInfo/>
-        </div>
 
       </div>
     )
