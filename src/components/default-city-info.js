@@ -21,7 +21,7 @@ class DefaultCityInfo extends React.Component{
         return(
             <div>
                 <form onSubmit={this.submitHandler}>
-                    <button>show weather in saint-petersburg</button>
+                    <button>show weather in moscow</button>
                 </form>
                 <LocationWeatherInfo city={this.state.city}/>
             </div>

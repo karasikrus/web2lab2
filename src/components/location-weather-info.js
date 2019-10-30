@@ -52,6 +52,11 @@ class LocationWeatherInfo extends React.Component{
     componentDidMount() {
         this.getWeather(this.props.city);
     }
+    componentDidUpdate(prevProps) {
+        if (prevProps.city !== this.props.city) {
+            this.getWeather(this.props.city);
+        }
+    }
 
 
     render() {
