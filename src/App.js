@@ -8,6 +8,13 @@ import DefaultCityInfo from "./components/default-city-info";
 import CityList from "./components/city-list";
 
 class  App extends React.Component{
+    // getLocation = () => {
+    //     if (navigator.geolocation) {
+    //         navigator.geolocation.getCurrentPosition(showPosition);
+    //     }
+    // }
+    //
+    // setLocation()
 
 
   render() {
