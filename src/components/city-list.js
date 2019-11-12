@@ -7,40 +7,31 @@ import {addCity} from "../actions/add-city";
 import {deleteCity} from "../actions/delete-city";
 
 function mapDispatchToProps(dispatch) {
+    console.log('a');
     return {
         addCity: city => dispatch(addCity(city)),
         deleteCity: city => dispatch(deleteCity(city))
     };
 }
 
+function mapStateToProps(state) {
+    console.log('b');
+    return {cities: state.cities};
+};
+
 class ConnectedCityList extends React.Component {
-    state = {
-        cities: []
-    }
+
 
     addCity = (cityName) => {
-        let cities = this.state.cities;
         const timeAdded = Date.now();
-        cities.push({
-            name: cityName,
-            timeAdded: timeAdded
-        });
-        this.setState({
-            cities: cities
-        });
         this.props.addCity({
             name: cityName,
             timeAdded: timeAdded
         });
+        console.log(this.props.cities);
     }
 
     removeCity = (city) => {
-        let cities = this.state.cities;
-        const index = cities.indexOf(city);
-        cities.splice(index, 1);
-        this.setState({
-            cities: cities
-        });
         this.props.deleteCity(city);
     }
 
@@ -58,7 +49,7 @@ class ConnectedCityList extends React.Component {
         return (
             <div>
                 <p>Cities: </p>
-                <ul>{this.formatCities(this.state.cities)}</ul>
+                <ul>{this.formatCities(this.props.cities)}</ul>
                 <AddCity addCity={this.addCity}/>
             </div>
 
@@ -67,7 +58,7 @@ class ConnectedCityList extends React.Component {
 }
 
 const CityList = connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(ConnectedCityList);
 
