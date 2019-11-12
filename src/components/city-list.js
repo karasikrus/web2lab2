@@ -2,8 +2,16 @@ import React from 'react';
 import LocationWeatherInfo from "./location-weather-info";
 import DeleteCity from "./delete-city";
 import AddCity from "./add-city";
+import {connect} from "react-redux";
+import {addCity} from "../actions/add-city";
 
-class CityList extends React.Component{
+function mapDispatchToProps(dispatch) {
+    return {
+        addCity: city => dispatch(addCity(city))
+    };
+}
+
+class ConnectedCityList extends React.Component {
     state = {
         cities: ['moscow', 'kursk', 'london']
     }
@@ -14,18 +22,19 @@ class CityList extends React.Component{
         this.setState({
             cities: cities
         });
+        this.props.addCity(city);
     }
 
     removeCity = (city) => {
         let cities = this.state.cities;
         const index = cities.indexOf(city);
-        cities.splice(index,1);
+        cities.splice(index, 1);
         this.setState({
             cities: cities
         });
     }
 
-    formatCities = (cities) =>{
+    formatCities = (cities) => {
         return cities.map((city) =>
             <li>
                 <p>{city}</p>
@@ -36,7 +45,7 @@ class CityList extends React.Component{
     };
 
     render() {
-        return(
+        return (
             <div>
 
                 <p>Cities: </p>
@@ -47,5 +56,10 @@ class CityList extends React.Component{
         );
     }
 }
+
+const CityList = connect(
+    null,
+    mapDispatchToProps
+)(ConnectedCityList);
 
 export default CityList
