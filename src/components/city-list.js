@@ -4,25 +4,34 @@ import DeleteCity from "./delete-city";
 import AddCity from "./add-city";
 import {connect} from "react-redux";
 import {addCity} from "../actions/add-city";
+import {deleteCity} from "../actions/delete-city";
 
 function mapDispatchToProps(dispatch) {
     return {
-        addCity: city => dispatch(addCity(city))
+        addCity: city => dispatch(addCity(city)),
+        deleteCity: city => dispatch(deleteCity(city))
     };
 }
 
 class ConnectedCityList extends React.Component {
     state = {
-        cities: ['moscow', 'kursk', 'london']
+        cities: []
     }
 
-    addCity = (city) => {
+    addCity = (cityName) => {
         let cities = this.state.cities;
-        cities.push(city);
+        const timeAdded = Date.now();
+        cities.push({
+            name: cityName,
+            timeAdded: timeAdded
+        });
         this.setState({
             cities: cities
         });
-        this.props.addCity(city);
+        this.props.addCity({
+            name: cityName,
+            timeAdded: timeAdded
+        });
     }
 
     removeCity = (city) => {
@@ -32,13 +41,14 @@ class ConnectedCityList extends React.Component {
         this.setState({
             cities: cities
         });
+        this.props.deleteCity(city);
     }
 
     formatCities = (cities) => {
         return cities.map((city) =>
-            <li>
-                <p>{city}</p>
-                <LocationWeatherInfo city={city}/>
+            <li key={city.timeAdded}>
+                <p>{city.name}</p>
+                <LocationWeatherInfo city={city.name}/>
                 <DeleteCity city={city} removeCity={this.removeCity}/>
             </li>
         );
@@ -47,7 +57,6 @@ class ConnectedCityList extends React.Component {
     render() {
         return (
             <div>
-
                 <p>Cities: </p>
                 <ul>{this.formatCities(this.state.cities)}</ul>
                 <AddCity addCity={this.addCity}/>
