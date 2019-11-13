@@ -4,15 +4,32 @@ import LocationWeatherInfo from "./location-weather-info";
 
 class DefaultCityInfo extends React.Component{
     state = {
-        city: 'санкт-петербург'
+        city: 'санкт-петербург',
+        latitude: undefined,
+        longitude: undefined
     }
     submitHandler = (e) => {
         e.preventDefault();
         console.log('pressed');
-        this.setState({
-            city: 'москва'
-        });
-        console.log(this.state.city);
+        this.getLocation();
+        console.log(this.state);
+    }
+
+    getLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position => {
+                this.setState({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                });
+                console.log(this.state);
+            }));
+        }
+    }
+
+
+    componentDidMount() {
+        this.getLocation();
     }
 
 
@@ -21,9 +38,9 @@ class DefaultCityInfo extends React.Component{
         return(
             <div>
                 <form onSubmit={this.submitHandler}>
-                    <button>show weather in moscow</button>
+                    <button>update geolocation</button>
                 </form>
-                <LocationWeatherInfo city={this.state.city}/>
+                <LocationWeatherInfo city={this.state.city} latitude={this.state.latitude} longitude={this.state.longitude}/>
             </div>
         );
     }

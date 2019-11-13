@@ -1,7 +1,7 @@
 import React from "react"
 
 
-const ApiKey = '4d7bab9a12e7e664eeadf2d29a195b1f';
+const ApiKey = '982553b8d730dcb96e93d24aa490d4fe';
 const ApiUrl = 'https://api.openweathermap.org/data/2.5/weather';
 
 class LocationWeatherInfo extends React.Component {
@@ -16,28 +16,28 @@ class LocationWeatherInfo extends React.Component {
         isLoading: false
     };
 
-    testFun = (city) => {
-        console.log(city);
-        this.setState({
-            isLoading: true
-        });
-    }
 
-    getWeather = async (city, coords) => {
+    getWeather = async (city, longitude, latitude) => {
         // e.preventDefault();
-        if (city === undefined) {
+        if (city === undefined && longitude === undefined && latitude === undefined) {
             return null;
         }
         this.setState({
             isLoading: true
         });
+        console.log('long = ', longitude);
         let url = new URL(ApiUrl);
         url.searchParams.append('appid', ApiKey);
         url.searchParams.append('units', 'metric');
-        url.searchParams.append('q', city);
+        if (longitude && latitude) {
+            console.log('coordinates');
+            url.searchParams.append('lon', longitude);
+            url.searchParams.append('lat', latitude);
+        } else {
+            url.searchParams.append('q', city);
+        }
         let response = await fetch(url);
         const data = await response.json();
-        console.log(data);
         if (data.cod === 200) {
             this.setState({
                 isLoading: false,
@@ -57,12 +57,13 @@ class LocationWeatherInfo extends React.Component {
     }
 
     componentDidMount() {
-        this.getWeather(this.props.city);
+       this.getWeather(this.props.city, this.props.longitude, this.props.latitude);
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.city !== this.props.city) {
-            this.getWeather(this.props.city);
+        if (prevProps.city !== this.props.city || prevProps.longitude !== this.props.longitude
+            || prevProps.latitude !== this.props.latitude) {
+            this.getWeather(this.props.city, this.props.longitude, this.props.latitude);
         }
     }
 
