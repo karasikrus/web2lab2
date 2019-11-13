@@ -16,7 +16,7 @@ class AddCity extends React.Component{
             <div>
                 <form onSubmit={this.addCity}>
                     <input></input>
-                    <button>добавить</button>
+                    <button>add city</button>
                 </form>
             </div>
         );

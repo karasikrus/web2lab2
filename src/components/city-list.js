@@ -5,6 +5,7 @@ import AddCity from "./add-city";
 import {connect} from "react-redux";
 import {addCity} from "../actions/add-city";
 import {deleteCity} from "../actions/delete-city";
+import '../styles/city-list.css'
 
 function mapDispatchToProps(dispatch) {
     console.log('a');
@@ -38,7 +39,6 @@ class ConnectedCityList extends React.Component {
     formatCities = (cities) => {
         return cities.map((city) =>
             <li key={city.timeAdded}>
-                <p>{city.name}</p>
                 <LocationWeatherInfo city={city.name}/>
                 <DeleteCity city={city} removeCity={this.removeCity}/>
             </li>
@@ -48,8 +48,7 @@ class ConnectedCityList extends React.Component {
     render() {
         return (
             <div>
-                <p>Cities: </p>
-                <ul>{this.formatCities(this.props.cities)}</ul>
+                <ul id="city-grid">{this.formatCities(this.props.cities)}</ul>
                 <AddCity addCity={this.addCity}/>
             </div>
 

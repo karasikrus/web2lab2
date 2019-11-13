@@ -20,9 +20,6 @@ class  App extends React.Component{
   render() {
     return(
       <div>
-        <div>
-          Работаем
-        </div>
           <DefaultCityInfo/>
           <CityList/>
 
