@@ -3,6 +3,9 @@ import '../styles/LocationWeatherInfo.css'
 
 const ApiKey = '982553b8d730dcb96e93d24aa490d4fe';
 const ApiUrl = 'https://api.openweathermap.org/data/2.5/weather';
+//delete city
+//error city
+//middleware
 
 
 class LocationWeatherInfo extends React.Component {
@@ -13,6 +16,7 @@ class LocationWeatherInfo extends React.Component {
         pressure: undefined,
         humidity: undefined,
         wind: undefined,
+        icon: undefined,
         error: undefined,
         isLoading: false
     };
@@ -46,7 +50,8 @@ class LocationWeatherInfo extends React.Component {
                 city: data.name,
                 pressure: data.main.pressure,
                 humidity: data.main.humidity,
-                wind: data.wind.speed
+                wind: data.wind.speed,
+                icon: data.weather[0].icon
             });
         } else {
             this.setState({
@@ -82,6 +87,9 @@ class LocationWeatherInfo extends React.Component {
                 {this.state.city && !this.state.isLoading && !this.state.error &&
                 <div className={'weather'}>
                     <div className={'city'}>{this.state.city}</div>
+                    <div className={'img'}>
+                        <img src={'http://openweathermap.org/img/wn/'+ this.state.icon +'@2x.png'} alt={'weather icon'}/>
+                    </div>
                     <div className={'infoType'}>
                         <div>temperature</div>
                         <div>{this.state.temp}</div>

@@ -48,17 +48,17 @@ class ConnectedCityList extends React.Component {
     render() {
         return (
             <div>
-                <ul id="city-grid">{this.formatCities(this.props.cities)}</ul>
                 <AddCity addCity={this.addCity}/>
+                <ul id="city-grid">{this.formatCities(this.props.cities)}</ul>
             </div>
 
         );
     }
 }
 
-const CItyList = connect(
+const CityList = connect(
     mapStateToProps,
     mapDispatchToProps
 )(ConnectedCityList);
 
-export default CItyList
+export default CityList

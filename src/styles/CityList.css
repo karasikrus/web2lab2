@@ -1,8 +1,9 @@
-.City-list {
+.CityList {
 
 }
 #city-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 2vw;
+    list-style-type: none;
 }
