@@ -1,5 +1,5 @@
 import {createStore} from "redux";
-import rootReducer from "./reducers/index";
+import rootReducer from "./reducers/Root";
 
 
 const persistedState = localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState'))

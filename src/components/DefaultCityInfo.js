@@ -1,7 +1,7 @@
 import React from 'react';
 
-import LocationWeatherInfo from "./location-weather-info";
-import "../styles/default-city-info.css"
+import LocationWeatherInfo from "./LocationWeatherInfo";
+import "../styles/DefaultCityInfo.css"
 
 class DefaultCityInfo extends React.Component{
     state = {

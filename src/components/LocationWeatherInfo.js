@@ -81,10 +81,10 @@ class LocationWeatherInfo extends React.Component {
                 {this.state.city && !this.state.isLoading && !this.state.error &&
                 <div>
                     <p>{this.state.city}</p>
-                    <p>temperature = {this.state.temp}</p>
-                    <p>humidity = {this.state.humidity}</p>
-                    <p>pressure = {this.state.pressure}</p>
-                    <p>wind = {this.state.wind}</p>
+                    <div className={'temperature'}><div>temperature</div>  <div>{this.state.temp}</div></div>
+                    <div className={'temperature'}><div>humidity </div>  <div> {this.state.humidity}</div></div>
+                    <div className={'temperature'}><div>pressure </div>  <div> {this.state.pressure}</div></div>
+                    <div className={'temperature'}><div>wind </div>  <div> {this.state.wind}</div></div>
                 </div>
                 }
                 {this.state.error &&

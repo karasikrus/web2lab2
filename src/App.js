@@ -1,11 +1,11 @@
 import React from 'react';
 
-import './components/location-weather-info'
-import './components/default-city-info'
+import './components/LocationWeatherInfo'
+import './components/DefaultCityInfo'
 
 import './App.css';
-import DefaultCityInfo from "./components/default-city-info";
-import CityList from "./components/city-list";
+import DefaultCityInfo from "./components/DefaultCityInfo";
+import CItyList from "./components/CItyList";
 
 class  App extends React.Component{
     // getLocation = () => {
@@ -21,7 +21,7 @@ class  App extends React.Component{
     return(
       <div>
           <DefaultCityInfo/>
-          <CityList/>
+          <CItyList/>
 
       </div>
     )

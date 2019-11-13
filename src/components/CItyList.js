@@ -1,11 +1,11 @@
 import React from 'react';
-import LocationWeatherInfo from "./location-weather-info";
-import DeleteCity from "./delete-city";
-import AddCity from "./add-city";
+import LocationWeatherInfo from "./LocationWeatherInfo";
+import DeleteCity from "./DeleteCity";
+import AddCity from "./AddCity";
 import {connect} from "react-redux";
-import {addCity} from "../actions/add-city";
-import {deleteCity} from "../actions/delete-city";
-import '../styles/city-list.css'
+import {addCity} from "../actions/AddCity";
+import {deleteCity} from "../actions/DeleteCity";
+import '../styles/CityList.css'
 
 function mapDispatchToProps(dispatch) {
     console.log('a');
@@ -56,9 +56,9 @@ class ConnectedCityList extends React.Component {
     }
 }
 
-const CityList = connect(
+const CItyList = connect(
     mapStateToProps,
     mapDispatchToProps
 )(ConnectedCityList);
 
-export default CityList
+export default CItyList
