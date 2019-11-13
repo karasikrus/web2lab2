@@ -1,8 +1,9 @@
 import React from "react"
-
+import '../styles/LocationWeatherInfo.css'
 
 const ApiKey = '982553b8d730dcb96e93d24aa490d4fe';
 const ApiUrl = 'https://api.openweathermap.org/data/2.5/weather';
+
 
 class LocationWeatherInfo extends React.Component {
 
@@ -57,7 +58,7 @@ class LocationWeatherInfo extends React.Component {
     }
 
     componentDidMount() {
-       this.getWeather(this.props.city, this.props.longitude, this.props.latitude);
+        this.getWeather(this.props.city, this.props.longitude, this.props.latitude);
     }
 
     componentDidUpdate(prevProps) {
@@ -79,12 +80,24 @@ class LocationWeatherInfo extends React.Component {
                 </div>
                 }
                 {this.state.city && !this.state.isLoading && !this.state.error &&
-                <div>
-                    <p>{this.state.city}</p>
-                    <div className={'temperature'}><div>temperature</div>  <div>{this.state.temp}</div></div>
-                    <div className={'humidity'}><div>humidity </div>  <div> {this.state.humidity}</div></div>
-                    <div className={'pressure'}><div>pressure </div>  <div> {this.state.pressure}</div></div>
-                    <div className={'wind'}><div>wind </div>  <div> {this.state.wind}</div></div>
+                <div className={'weather'}>
+                    <div className={'city'}>{this.state.city}</div>
+                    <div className={'infoType'}>
+                        <div>temperature</div>
+                        <div>{this.state.temp}</div>
+                    </div>
+                    <div className={'infoType'}>
+                        <div>humidity</div>
+                        <div>{this.state.humidity}</div>
+                    </div>
+                    <div className={'infoType'}>
+                        <div>pressure</div>
+                        <div>{this.state.pressure}</div>
+                    </div>
+                    <div className={'infoType'}>
+                        <div>wind</div>
+                        <div>{this.state.wind}</div>
+                    </div>
                 </div>
                 }
                 {this.state.error &&

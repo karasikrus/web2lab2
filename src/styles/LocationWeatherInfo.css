@@ -1,0 +1,9 @@
+.weather {
+    display: flex;
+    flex-direction: column;
+}
+.infoType {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
