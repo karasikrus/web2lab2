@@ -1,14 +1,24 @@
 import React from "react"
 import '../styles/LocationWeatherInfo.css'
+import {connect} from "react-redux";
+import {addCity} from "../actions/AddCity";
+import {deleteCity} from "../actions/DeleteCity";
 
 const ApiKey = '982553b8d730dcb96e93d24aa490d4fe';
 const ApiUrl = 'https://api.openweathermap.org/data/2.5/weather';
 //delete city
 //error city
 //middleware
+function mapDispatchToProps(dispatch) {
+    console.log('a');
+    return {
+
+        deleteCity: city => dispatch(deleteCity(city))
+    };
+}
 
 
-class LocationWeatherInfo extends React.Component {
+class ConnectedLocationWeatherInfo extends React.Component {
 
     state = {
         temp: undefined,
@@ -119,5 +129,8 @@ class LocationWeatherInfo extends React.Component {
         )
     }
 }
-
+const LocationWeatherInfo = connect(
+    null,
+    null
+)(ConnectedLocationWeatherInfo);
 export default LocationWeatherInfo
