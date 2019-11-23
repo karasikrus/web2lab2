@@ -2,9 +2,9 @@ import {createStore, applyMiddleware} from "redux";
 import createSagaMiddleware from 'redux-saga';
 
 import rootReducer from "./reducers/Root";
-import { helloSaga } from './sagas'
+import { helloSaga } from "./sagas/sagas";
 
-const sagaMiddleware = createSagaMiddleware.default();
+const sagaMiddleware = createSagaMiddleware();
 
 const persistedState = localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState'))
     : {
