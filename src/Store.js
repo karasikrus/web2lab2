@@ -2,7 +2,7 @@ import {createStore, applyMiddleware} from "redux";
 import createSagaMiddleware from 'redux-saga';
 
 import rootReducer from "./reducers/Root";
-import { helloSaga } from "./sagas/sagas";
+import { helloSaga, watchGetWeather } from "./sagas/sagas";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -19,5 +19,6 @@ store.subscribe(() => {
     localStorage.setItem('reduxState', JSON.stringify(store.getState()))
 });
 sagaMiddleware.run(helloSaga);
+sagaMiddleware.run(watchGetWeather);
 
 export default store;

@@ -1,2 +1,8 @@
 export const ADD_CITY = "ADD_CITY";
 export const DELETE_CITY = "DELETE_CITY";
+export const FETCH_CITY = "FETCH_CITY";
+export const FETCH_CITY_SUCCEEDED = "FETCH_CITY_SUCCEEDED";
+export const FETCH_CITY_FAILED = "FETCH_CITY_FAILED";
+export const ADD_CITY_SUCCEEDED = "ADD_CITY_SUCCEEDED";
+export const ADD_CITY_FAILED = "ADD_CITY_FAILED";
+export const GET_WEATHER = "GET_WEATHER";
