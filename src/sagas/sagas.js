@@ -16,7 +16,6 @@ export function* watchGetWeather() {
 }
 
 
-
 async function fetchWeather(city, longitude, latitude) {
     if (city === undefined && longitude === undefined && latitude === undefined) {
         return null;
@@ -59,10 +58,8 @@ function* addNewCity(data) {
         });
         newCity = {
             temp: data.main.temp,
-            city: {
-                name: data.name,
-                timeAdded: Date.now()
-            },
+            name: data.name,
+            timeAdded: Date.now(),
             pressure: data.main.pressure,
             humidity: data.main.humidity,
             wind: data.wind.speed,
