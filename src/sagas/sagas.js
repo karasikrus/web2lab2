@@ -21,6 +21,7 @@ async function fetchWeather(city, longitude, latitude) {
     if (city === undefined && longitude === undefined && latitude === undefined) {
         return null;
     }
+    console.log('fetching weather for city = ', city)
     let url = new URL(ApiUrl);
     url.searchParams.append('appid', ApiKey);
     url.searchParams.append('units', 'metric');
@@ -30,21 +31,31 @@ async function fetchWeather(city, longitude, latitude) {
     } else {
         url.searchParams.append('q', city);
     }
+    console.log("fetching url = ", url);
     let response = await fetch(url);
     const data = await response.json();
+    console.log('reply data = ', data);
+    console.log('data.cod = ', data.cod);
     if (data.cod === 200) {
+        console.log('fetch success');
         return Promise.resolve(data);
     } else {
         return Promise.reject(data);
     }
 };
 
-function* addNewCity(cityName) {
+export function* watchAddNewCity() {
+    yield takeEvery('ADD_CITY', addNewCity);
+}
+
+function* addNewCity(data) {
+    const cityName = data.payload.name;
+    console.log('addNewCity saga is adding new city:', cityName, 'payload = ', data.payload);
     let newCity = {};
     try {
         const data = yield call(() => {
             return fetchWeather(cityName)
-                .then(res => res.json())
+                .then(data => data)
         });
         newCity = {
             temp: data.main.temp,
@@ -57,9 +68,11 @@ function* addNewCity(cityName) {
             wind: data.wind.speed,
             icon: data.weather[0].icon
         };
+        console.log('newCity = ', newCity);
         yield put(addCitySucceeded(newCity));
 
     } catch (error) {
+        console.log('error in addNewCity saga');
         yield put(addCityFailed());
     }
 }
