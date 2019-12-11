@@ -21,16 +21,8 @@ function mapDispatchToProps(dispatch) {
 class ConnectedLocationWeatherInfo extends React.Component {
 
     state = {
-        temp: undefined,
-        city: undefined,
-        pressure: undefined,
-        humidity: undefined,
-        wind: undefined,
-        icon: undefined,
-        error: undefined,
         isLoading: false
     };
-
 
 
     componentDidMount() {
@@ -39,16 +31,18 @@ class ConnectedLocationWeatherInfo extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        // if (prevProps.city !== this.props.city || prevProps.longitude !== this.props.longitude
-        //     || prevProps.latitude !== this.props.latitude) {
-        //     this.getWeather(this.props.city, this.props.longitude, this.props.latitude);
-        // }
+        if (prevProps.city.isLoading !== this.props.city.isLoading) {
+            console.log('aaa');
+            this.setState({
+                isLoading: this.props.city.isLoading
+            })
+        }
     }
 
 
     render() {
         return (
-            <div>
+            <div key={this.props.city.isLoading}>
                 <div>
                 </div>
                 {this.props.city.isLoading &&
@@ -60,7 +54,8 @@ class ConnectedLocationWeatherInfo extends React.Component {
                 <div className={'weather'}>
                     <div className={'city'}>{this.props.city.name}</div>
                     <div className={'img'}>
-                        <img src={'http://openweathermap.org/img/wn/'+ this.props.city.icon +'@2x.png'} alt={'weather icon'}/>
+                        <img src={'http://openweathermap.org/img/wn/' + this.props.city.icon + '@2x.png'}
+                             alt={'weather icon'}/>
                     </div>
                     <div className={'infoType'}>
                         <div>temperature</div>
@@ -91,6 +86,7 @@ class ConnectedLocationWeatherInfo extends React.Component {
         )
     }
 }
+
 const LocationWeatherInfo = connect(
     null,
     null

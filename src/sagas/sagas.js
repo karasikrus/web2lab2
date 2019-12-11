@@ -1,7 +1,7 @@
 import {put, takeEvery, all, call} from 'redux-saga/effects'
 
 import {fetchCity, fetchCityFailed, fetchCitySucceeded, updateWeather} from "../actions/FetchCity";
-import {addCity, addCitySucceeded, addCityFailed} from "../actions/AddCity";
+import {addCity, addCitySucceeded, addCityFailed, addCityStarted} from "../actions/AddCity";
 
 const ApiKey = '982553b8d730dcb96e93d24aa490d4fe';
 const ApiUrl = 'https://api.openweathermap.org/data/2.5/weather';
@@ -50,7 +50,12 @@ export function* watchAddNewCity() {
 function* addNewCity(data) {
     const cityName = data.payload.name;
     console.log('addNewCity saga is adding new city:', cityName, 'payload = ', data.payload);
-    let newCity = {};
+    let time = Date.now();
+    let newCity = {
+        timeAdded: time,
+        isLoading: true
+    };
+    yield put(addCityStarted(newCity));
     try {
         const data = yield call(() => {
             return fetchWeather(cityName)
@@ -59,11 +64,12 @@ function* addNewCity(data) {
         newCity = {
             temp: data.main.temp,
             name: data.name,
-            timeAdded: Date.now(),
+            timeAdded: time,
             pressure: data.main.pressure,
             humidity: data.main.humidity,
             wind: data.wind.speed,
-            icon: data.weather[0].icon
+            icon: data.weather[0].icon,
+            isLoading: false
         };
         console.log('newCity = ', newCity);
         yield put(addCitySucceeded(newCity));

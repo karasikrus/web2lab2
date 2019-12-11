@@ -51,9 +51,21 @@ class ConnectedCityList extends React.Component {
         );
     };
 
+    componentDidMount() {
+        console.log('citylist props = ', this.props);
+        setTimeout(() => console.log('citylist props updated = ', this.props), 5000);
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.cities !== this.props.cities){
+            console.log('citylist changed');
+            this.forceUpdate();
+        }
+    }
+
+
     render() {
         return (
-            <div>
+            <div key={this.props.cities}>
                 <AddCity addCity={this.addCity}/>
                 <ul id="city-grid">{this.formatCities(this.props.cities)}</ul>
             </div>
