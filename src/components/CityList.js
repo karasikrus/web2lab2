@@ -43,11 +43,15 @@ class ConnectedCityList extends React.Component {
     }
 
     formatCities = (cities) => {
-        return cities.map((city) =>
-            <li key={city.timeAdded}>
-                <LocationWeatherInfo city={city}/>
-                <DeleteCity city={city} removeCity={this.removeCity}/>
-            </li>
+        console.log('formatting cities with ', cities);
+        cities.map((c) => console.log('c: ', c));
+        return cities.map((city) => {
+            console.log('city = ', city,' cities = ', cities );
+            return <li key={city.timeAdded}>
+                    <LocationWeatherInfo city={city}/>
+                    <DeleteCity city={city} removeCity={this.removeCity}/>
+                </li>
+            }
         );
     };
 
@@ -56,16 +60,19 @@ class ConnectedCityList extends React.Component {
         setTimeout(() => console.log('citylist props updated = ', this.props), 5000);
     }
     componentDidUpdate(prevProps) {
-        if (prevProps.cities !== this.props.cities){
-            console.log('citylist changed');
+        console.log(prevProps)
+        console.log(this.props)
+        if (JSON.stringify(prevProps.cities) !== JSON.stringify(this.props.cities)){
+            console.log('!111!citylist changed');
             this.forceUpdate();
         }
     }
 
 
     render() {
+        console.log('before render, cities are : ', this.props.cities);
         return (
-            <div key={this.props.cities}>
+            <div>
                 <AddCity addCity={this.addCity}/>
                 <ul id="city-grid">{this.formatCities(this.props.cities)}</ul>
             </div>
