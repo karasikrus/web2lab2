@@ -32,55 +32,17 @@ class ConnectedLocationWeatherInfo extends React.Component {
     };
 
 
-    getWeather = async (city, longitude, latitude) => {
-        // e.preventDefault();
-        if (city === undefined && longitude === undefined && latitude === undefined) {
-            return null;
-        }
-        this.setState({
-            isLoading: true
-        });
-        console.log('long = ', longitude);
-        let url = new URL(ApiUrl);
-        url.searchParams.append('appid', ApiKey);
-        url.searchParams.append('units', 'metric');
-        if (longitude && latitude) {
-            console.log('coordinates');
-            url.searchParams.append('lon', longitude);
-            url.searchParams.append('lat', latitude);
-        } else {
-            url.searchParams.append('q', city);
-        }
-        let response = await fetch(url);
-        const data = await response.json();
-        if (data.cod === 200) {
-            this.setState({
-                isLoading: false,
-                temp: data.main.temp,
-                city: data.name,
-                pressure: data.main.pressure,
-                humidity: data.main.humidity,
-                wind: data.wind.speed,
-                icon: data.weather[0].icon
-            });
-        } else {
-            this.setState({
-                isLoading: false,
-                error: data.message
-            });
-        }
-        return data;
-    }
 
     componentDidMount() {
-        this.getWeather(this.props.city, this.props.longitude, this.props.latitude);
+        console.log('props = ', this.props);
+        //this.getWeather(this.props.city, this.props.longitude, this.props.latitude);
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.city !== this.props.city || prevProps.longitude !== this.props.longitude
-            || prevProps.latitude !== this.props.latitude) {
-            this.getWeather(this.props.city, this.props.longitude, this.props.latitude);
-        }
+        // if (prevProps.city !== this.props.city || prevProps.longitude !== this.props.longitude
+        //     || prevProps.latitude !== this.props.latitude) {
+        //     this.getWeather(this.props.city, this.props.longitude, this.props.latitude);
+        // }
     }
 
 
@@ -89,38 +51,38 @@ class ConnectedLocationWeatherInfo extends React.Component {
             <div>
                 <div>
                 </div>
-                {this.state.isLoading &&
+                {this.props.city.isLoading &&
                 <div>
                     <p>Грузится...</p>
                 </div>
                 }
-                {this.state.city && !this.state.isLoading && !this.state.error &&
+                {this.props.city.name && !this.props.city.isLoading && !this.props.city.error &&
                 <div className={'weather'}>
-                    <div className={'city'}>{this.state.city}</div>
+                    <div className={'city'}>{this.props.city.name}</div>
                     <div className={'img'}>
-                        <img src={'http://openweathermap.org/img/wn/'+ this.state.icon +'@2x.png'} alt={'weather icon'}/>
+                        <img src={'http://openweathermap.org/img/wn/'+ this.props.city.icon +'@2x.png'} alt={'weather icon'}/>
                     </div>
                     <div className={'infoType'}>
                         <div>temperature</div>
-                        <div>{this.state.temp}</div>
+                        <div>{this.props.city.temp}</div>
                     </div>
                     <div className={'infoType'}>
                         <div>humidity</div>
-                        <div>{this.state.humidity}</div>
+                        <div>{this.props.city.humidity}</div>
                     </div>
                     <div className={'infoType'}>
                         <div>pressure</div>
-                        <div>{this.state.pressure}</div>
+                        <div>{this.props.city.pressure}</div>
                     </div>
                     <div className={'infoType'}>
                         <div>wind</div>
-                        <div>{this.state.wind}</div>
+                        <div>{this.props.city.wind}</div>
                     </div>
                 </div>
                 }
-                {this.state.error &&
+                {this.props.city.error &&
                 <div>
-                    <p>{this.state.error}</p>
+                    <p>{this.props.city.error}</p>
                 </div>
 
                 }

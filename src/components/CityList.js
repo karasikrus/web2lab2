@@ -45,7 +45,7 @@ class ConnectedCityList extends React.Component {
     formatCities = (cities) => {
         return cities.map((city) =>
             <li key={city.timeAdded}>
-                <LocationWeatherInfo city={city.name}/>
+                <LocationWeatherInfo city={city}/>
                 <DeleteCity city={city} removeCity={this.removeCity}/>
             </li>
         );
