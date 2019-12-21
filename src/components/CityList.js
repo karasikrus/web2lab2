@@ -19,6 +19,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
     console.log('b');
+    console.log('mapStateToProps updated state is ', JSON.stringify(state.cities));
     return {cities: state.cities};
 };
 
@@ -43,8 +44,8 @@ class ConnectedCityList extends React.Component {
     }
 
     formatCities = (cities) => {
-        console.log('formatting cities with ', cities);
-        cities.map((c) => console.log('c: ', c));
+        debugger;
+        console.log('formatting cities with ', JSON.stringify(cities));
         return cities.map((city) => {
             console.log('city = ', city,' cities = ', cities );
             return <li key={city.timeAdded}>
@@ -62,7 +63,7 @@ class ConnectedCityList extends React.Component {
     componentDidUpdate(prevProps) {
         console.log(prevProps)
         console.log(this.props)
-        if (JSON.stringify(prevProps.cities) !== JSON.stringify(this.props.cities)){
+        if (JSON.stringify(prevProps) !== JSON.stringify(this.props)){
             console.log('!111!citylist changed');
             this.forceUpdate();
         }
@@ -70,7 +71,7 @@ class ConnectedCityList extends React.Component {
 
 
     render() {
-        console.log('before render, cities are : ', this.props.cities);
+        console.log('before render, cities are : ', JSON.stringify(this.props.cities));
         return (
             <div>
                 <AddCity addCity={this.addCity}/>

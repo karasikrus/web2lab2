@@ -29,14 +29,14 @@ function rootReducer(state = initialState, action) {
     else if (action.type === ADD_CITY_SUCCEEDED) {
         console.log('add_city_succ');
         let oldState = Object.assign({}, state);
-        console.log(oldState);
+        console.log(JSON.stringify(oldState));
         const index = oldState.cities.findIndex(x => x.timeAdded === action.payload.timeAdded);
         console.log('index = ', index);
         console.log('old city = ', oldState.cities[index]);
         console.log('new city = ', action.payload);
         oldState.cities[index] = action.payload;
-        console.log(oldState);
-        return Object.assign({}, state, oldState);
+        console.log(JSON.stringify(oldState));
+        return JSON.parse(JSON.stringify(oldState));
     } else if (action.type === DELETE_CITY) {
         return Object.assign({}, state, {
             cities: state.cities.filter(function (city) {
