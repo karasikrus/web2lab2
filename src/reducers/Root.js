@@ -31,9 +31,6 @@ function rootReducer(state = initialState, action) {
         let oldState = Object.assign({}, state);
         console.log(JSON.stringify(oldState));
         const index = oldState.cities.findIndex(x => x.timeAdded === action.payload.timeAdded);
-        console.log('index = ', index);
-        console.log('old city = ', oldState.cities[index]);
-        console.log('new city = ', action.payload);
         oldState.cities[index] = action.payload;
         console.log(JSON.stringify(oldState));
         return JSON.parse(JSON.stringify(oldState));
@@ -44,30 +41,21 @@ function rootReducer(state = initialState, action) {
             })
         });
     } else if (action.type === FETCH_CITY){
-        const index = state.cities.findIndex(x => x.city.timeAdded === action.payload.timeAdded);
         let oldState = Object.assign({}, state);
-        oldState.cities[index].loading = true;
-        oldState.cities[index].error = false;
-        return oldState;
+        const index = oldState.cities.findIndex(x => x.timeAdded === action.payload.timeAdded);
+        oldState.cities[index].isLoading = true;
+        return JSON.parse(JSON.stringify(oldState));
     } else if (action.type === FETCH_CITY_SUCCEEDED){
-        const index = state.cities.findIndex(x => x.city.timeAdded === action.payload.timeAdded);
         let oldState = Object.assign({}, state);
-        oldState.cities[index] = {
-            loading: false,
-            temp: action.payload.temp,
-            city: action.payload.city,
-            pressure: action.payload.pressure,
-            humidity: action.payload.humidity,
-            wind: action.payload.wind,
-            icon: action.payload.icon
-        };
-        return oldState;
+        const index = oldState.cities.findIndex(x => x.timeAdded === action.payload.timeAdded);
+        oldState.cities[index] = action.payload;
+        return JSON.parse(JSON.stringify(oldState));
     } else if (action.type === FETCH_CITY_FAILED){
-        const index = state.cities.findIndex(x => x.city.timeAdded === action.payload.timeAdded);
         let oldState = Object.assign({}, state);
-        oldState.cities[index].loading = false;
+        const index = oldState.cities.findIndex(x => x.timeAdded === action.payload.timeAdded);
+        oldState.cities[index].isLoading = false;
         oldState.cities[index].error = true;
-        return oldState;
+        return JSON.parse(JSON.stringify(oldState));
     }
         return state;
 };

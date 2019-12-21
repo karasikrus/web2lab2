@@ -2,6 +2,7 @@ import {put, takeEvery, all, call} from 'redux-saga/effects'
 
 import {fetchCity, fetchCityFailed, fetchCitySucceeded, updateWeather} from "../actions/FetchCity";
 import {addCity, addCitySucceeded, addCityFailed, addCityStarted} from "../actions/AddCity";
+import {deleteCity} from "../actions/DeleteCity";
 
 const ApiKey = '982553b8d730dcb96e93d24aa490d4fe';
 const ApiUrl = 'https://api.openweathermap.org/data/2.5/weather';
@@ -12,6 +13,7 @@ export function* helloSaga() {
 }
 
 export function* watchGetWeather() {
+    console.log('get weather saga watches')
     yield takeEvery('GET_WEATHER', getWeather);
 }
 
@@ -76,7 +78,8 @@ function* addNewCity(data) {
 
     } catch (error) {
         console.log('error in addNewCity saga');
-        yield put(addCityFailed());
+        yield put(deleteCity(newCity));
+        alert('cannot add such city');
     }
 }
 
@@ -84,31 +87,36 @@ function* getWeather(action) {
     const city = action.payload.city;
     const longitude = action.payload.longitude;
     const latitude = action.payload.latitude;
-    // e.preventDefault();
-    let weather = {};
+    const time = city.timeAdded;
+    console.log('getweather saga: fetching weather for city ', JSON.stringify(city));
+    debugger;
+    let updatedCity = {};
+    if (city.name) {
+        yield put(fetchCity(city));
+    }
     try {
         if (city.name === undefined && longitude === undefined && latitude === undefined) {
             return null;
         }
-        yield put(fetchCity());
         const data = yield call(() => {
-            return fetchWeather(city, longitude, latitude)
-                .then(res => res.json())
+            return fetchWeather(city.name, longitude, latitude)
+                .then(data => data)
         });
-        weather = {
+        updatedCity = {
             temp: data.main.temp,
-            city: city,
+            name: data.name,
+            timeAdded: time,
             pressure: data.main.pressure,
             humidity: data.main.humidity,
             wind: data.wind.speed,
-            icon: data.weather[0].icon
+            icon: data.weather[0].icon,
+            isLoading: false
         };
-        yield put(fetchCitySucceeded(weather));
+        console.log('getweather saga: fetched weather for city ', JSON.stringify(updatedCity));
+        yield put(fetchCitySucceeded(updatedCity));
 
     } catch (error) {
-        weather = {
-            error: error.message
-        };
-        yield put(fetchCityFailed(weather));
+        console.log('getweather saga: error while fetching weather for city ', JSON.stringify(city));
+        yield put(fetchCityFailed(city));
     }
 }
