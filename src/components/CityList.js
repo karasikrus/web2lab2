@@ -9,7 +9,6 @@ import {updateWeather} from "../actions/FetchCity";
 import '../styles/CityList.css'
 
 function mapDispatchToProps(dispatch) {
-    console.log('a');
     return {
         addCity: city => dispatch(addCity(city)),
         deleteCity: city => dispatch(deleteCity(city)),
@@ -18,8 +17,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    console.log('b');
-    console.log('mapStateToProps updated state is ', JSON.stringify(state.cities));
     return {cities: state.cities};
 };
 
@@ -43,7 +40,6 @@ class ConnectedCityList extends React.Component {
     }
 
     formatCities = (cities) => {
-        console.log('formatting cities with ', JSON.stringify(cities));
         return cities.map((city) => {
             return <li key={city.timeAdded}>
                     <LocationWeatherInfo city={city}/>
@@ -55,16 +51,9 @@ class ConnectedCityList extends React.Component {
 
     componentDidMount() {
         this.props.cities.map((city) => {
-            console.log('updating weather for city ', JSON.stringify(city));
             this.updateWeather({city: city});
             return null;
         })
-    }
-    componentDidUpdate(prevProps) {
-        if (JSON.stringify(prevProps) !== JSON.stringify(this.props)){
-            console.log('!111!citylist changed');
-            this.forceUpdate();
-        }
     }
 
 

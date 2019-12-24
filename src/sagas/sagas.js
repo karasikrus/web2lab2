@@ -8,22 +8,16 @@ const ApiKey = '982553b8d730dcb96e93d24aa490d4fe';
 const ApiUrl = 'https://api.openweathermap.org/data/2.5/weather';
 
 
-export function* helloSaga() {
-    console.log('Hello Sagas!')
-}
 
 export function* watchGetWeather() {
-    console.log('get weather saga watches')
     yield takeEvery('GET_WEATHER', getWeather);
 }
 
 export function* watchUpdateGeo() {
-    console.log('get weather saga watches')
     yield takeEvery('UPDATE_GEO', updateGeo);
 }
 
 function* updateGeo(payload) {
-    debugger;
     const coords = yield call(() => {
         return getLocation()
             .then(data => data)
@@ -44,7 +38,6 @@ function* updateGeo(payload) {
             longitude: coords.longitude,
             latitude: coords.latitude
         };
-        console.log('defaultCity = ', defaultCity);
         yield put(updateGeoSucceeded(defaultCity));
 
     } catch (error) {
@@ -58,7 +51,6 @@ async function fetchWeather(city, longitude, latitude) {
     if (city === undefined && longitude === undefined && latitude === undefined) {
         return null;
     }
-    console.log('fetching weather for city = ', city)
     let url = new URL(ApiUrl);
     url.searchParams.append('appid', ApiKey);
     url.searchParams.append('units', 'metric');
@@ -68,11 +60,9 @@ async function fetchWeather(city, longitude, latitude) {
     } else {
         url.searchParams.append('q', city);
     }
-    console.log("fetching url = ", url);
     let response = await fetch(url);
     const data = await response.json();
     if (data.cod === 200) {
-        console.log('fetch success');
         return Promise.resolve(data);
     } else {
         return Promise.reject(data);
@@ -151,7 +141,6 @@ function* getWeather(action) {
 }
 
 async function getLocation() {
-    debugger;
     return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
             position => resolve({

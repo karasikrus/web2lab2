@@ -17,5 +17,9 @@
 }
 .city {
     color: #d2cdc7;
+    font-size: x-large;
+}
+.defaultCity {
+    color: #827e7b;
     font-size: xx-large;
 }

@@ -10,7 +10,6 @@ const ApiUrl = 'https://api.openweathermap.org/data/2.5/weather';
 //error city
 //middleware
 function mapDispatchToProps(dispatch) {
-    console.log('a');
     return {
 
         deleteCity: city => dispatch(deleteCity(city))
@@ -20,19 +19,7 @@ function mapDispatchToProps(dispatch) {
 
 class ConnectedLocationWeatherInfo extends React.Component {
 
-    state = {
-        isLoading: false
-    };
 
-
-    componentDidMount() {
-        console.log('props = ', this.props);
-        //this.getWeather(this.props.city, this.props.longitude, this.props.latitude);
-    }
-
-    componentDidUpdate(prevProps) {
-            console.log('new state for city: ', this.props.city.name, ' = ', this.props);
-    }
 
 
     render() {
@@ -47,7 +34,12 @@ class ConnectedLocationWeatherInfo extends React.Component {
                 }
                 {this.props.city.name && !this.props.city.isLoading && !this.props.city.error &&
                 <div className={'weather'}>
+                    {!this.props.city.longitude &&
                     <div className={'city'}>{this.props.city.name}</div>
+                    }
+                    {this.props.city.longitude &&
+                    <div className={'defaultCity'}>{this.props.city.name}</div>
+                    }
                     <div className={'img'}>
                         <img src={'http://openweathermap.org/img/wn/' + this.props.city.icon + '@2x.png'}
                              alt={'weather icon'}/>
@@ -68,6 +60,18 @@ class ConnectedLocationWeatherInfo extends React.Component {
                         <div>wind</div>
                         <div>{this.props.city.wind}</div>
                     </div>
+                    {this.props.city.longitude &&
+                    <div className={'infoType'}>
+                        <div>longitude</div>
+                        <div>{this.props.city.longitude.toFixed(2)}</div>
+                    </div>
+                    }
+                    {this.props.city.latitude &&
+                    <div className={'infoType'}>
+                        <div>latitude</div>
+                        <div>{this.props.city.latitude.toFixed(2)}</div>
+                        </div>
+                    }
                 </div>
                 }
                 {this.props.city.error &&

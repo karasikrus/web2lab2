@@ -27,12 +27,10 @@ function rootReducer(state = initialState, action) {
             cityError: true
         });
     } else if (action.type === ADD_CITY_STARTED) {
-        console.log('add_city_started');
         return Object.assign({}, state, {
             cities: state.cities.concat(action.payload)
         });
     } else if (action.type === ADD_CITY_SUCCEEDED) {
-        console.log('add_city_succ');
         let oldState = Object.assign({}, state);
         console.log(JSON.stringify(oldState));
         const index = oldState.cities.findIndex(x => x.timeAdded === action.payload.timeAdded);
@@ -61,7 +59,7 @@ function rootReducer(state = initialState, action) {
         oldState.cities[index].isLoading = false;
         oldState.cities[index].error = true;
         return JSON.parse(JSON.stringify(oldState));
-    } else if (action.type === UPDATE_GEO_SUCCEEDED){
+    } else if (action.type === UPDATE_GEO_SUCCEEDED) {
         let oldState = Object.assign({}, state);
         oldState.defaultCity = action.payload;
         return JSON.parse(JSON.stringify(oldState));
