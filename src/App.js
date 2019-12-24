@@ -6,6 +6,7 @@ import './components/DefaultCityInfo'
 import './App.css';
 import DefaultCityInfo from "./components/DefaultCityInfo";
 import CityList from "./components/CityList";
+import "antd/dist/antd.css";
 
 class  App extends React.Component{
     // getLocation = () => {

@@ -3,6 +3,7 @@ import {put, takeEvery, call} from 'redux-saga/effects'
 import {fetchCity, fetchCityFailed, fetchCitySucceeded, updateGeoSucceeded} from "../actions/FetchCity";
 import {addCitySucceeded, addCityStarted} from "../actions/AddCity";
 import {deleteCity} from "../actions/DeleteCity";
+import {notification} from "antd";
 
 const ApiKey = '982553b8d730dcb96e93d24aa490d4fe';
 const ApiUrl = 'https://api.openweathermap.org/data/2.5/weather';
@@ -106,7 +107,11 @@ function* addNewCity(data) {
 
     } catch (error) {
         yield put(deleteCity(newCity));
-        alert('cannot add such city');
+        notification.error({
+            message: `Cannot add city ${cityName}`,
+            description:'There is no such city in database',
+            duration: 0
+        });
     }
 }
 

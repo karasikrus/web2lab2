@@ -13,7 +13,7 @@ button {
 
     background-color: rgba(80, 80, 81, 0.62); /* Green */
     border: none;
-    color: white;
+    color: white !important;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
