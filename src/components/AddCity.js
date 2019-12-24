@@ -3,18 +3,19 @@ class AddCity extends React.Component{
 
     state = {
         city: undefined
-    }
+    };
 
     addCity = (e) =>{
         e.preventDefault();
         this.props.addCity(e.target[0].value);
-    }
+        e.target[0].value = '';
+    };
 
     render() {
         return(
-            <div>
+            <div className={'addCity'}>
                 <form onSubmit={this.addCity}>
-                    <input></input>
+                    <input placeholder={'Type the city here'}/>
                     <button>add city</button>
                 </form>
             </div>

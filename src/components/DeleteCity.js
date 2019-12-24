@@ -3,12 +3,12 @@ class DeleteCity extends React.Component{
 
     deleteCity = () =>{
         this.props.removeCity(this.props.city);
-    }
+    };
 
     render() {
         return(
-          <div>
-              <button onClick={this.deleteCity}>X</button>
+          <div className={'delete'}>
+              <button className={'deleteButton'} onClick={this.deleteCity}>delete city</button>
           </div>
         );
     }

@@ -1,7 +1,7 @@
-import {put, takeEvery, all, call} from 'redux-saga/effects'
+import {put, takeEvery, call} from 'redux-saga/effects'
 
-import {fetchCity, fetchCityFailed, fetchCitySucceeded, updateWeather, updateGeoSucceeded} from "../actions/FetchCity";
-import {addCity, addCitySucceeded, addCityFailed, addCityStarted} from "../actions/AddCity";
+import {fetchCity, fetchCityFailed, fetchCitySucceeded, updateGeoSucceeded} from "../actions/FetchCity";
+import {addCitySucceeded, addCityStarted} from "../actions/AddCity";
 import {deleteCity} from "../actions/DeleteCity";
 
 const ApiKey = '982553b8d730dcb96e93d24aa490d4fe';
@@ -73,7 +73,7 @@ async function fetchWeather(city, longitude, latitude) {
     } else {
         return Promise.reject(data);
     }
-};
+}
 
 export function* watchAddNewCity() {
     yield takeEvery('ADD_CITY', addNewCity);

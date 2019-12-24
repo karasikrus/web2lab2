@@ -1,5 +1,4 @@
 import {
-    ADD_CITY,
     DELETE_CITY,
     FETCH_CITY,
     FETCH_CITY_SUCCEEDED,
@@ -65,6 +64,6 @@ function rootReducer(state = initialState, action) {
         return JSON.parse(JSON.stringify(oldState));
     }
     return state;
-};
+}
 
 export default rootReducer;

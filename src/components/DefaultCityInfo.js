@@ -3,8 +3,6 @@ import React from 'react';
 import LocationWeatherInfo from "./LocationWeatherInfo";
 import "../styles/DefaultCityInfo.css"
 import {connect} from "react-redux";
-import {addCity} from "../actions/AddCity";
-import {deleteCity} from "../actions/DeleteCity";
 import {updateGeo} from "../actions/FetchCity";
 
 class ConnectedDefaultCityInfo extends React.Component {
@@ -13,7 +11,7 @@ class ConnectedDefaultCityInfo extends React.Component {
         console.log('pressed');
         this.props.getLocation(this.props.defaultCity);
         console.log(this.props);
-    }
+    };
 
 
 
@@ -38,7 +36,7 @@ class ConnectedDefaultCityInfo extends React.Component {
 
 function mapStateToProps(state) {
     return {defaultCity: state.defaultCity};
-};
+}
 
 function mapDispatchToProps(dispatch) {
     return {
