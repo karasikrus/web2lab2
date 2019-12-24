@@ -7,7 +7,6 @@ class AddCity extends React.Component{
 
     addCity = (e) =>{
         e.preventDefault();
-        console.log("dobavlyayem gorod ", e.target[0].value);
         this.props.addCity(e.target[0].value);
     }
 

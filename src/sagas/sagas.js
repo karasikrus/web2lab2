@@ -18,13 +18,19 @@ export function* watchUpdateGeo() {
 }
 
 function* updateGeo(payload) {
-    const coords = yield call(() => {
-        return getLocation()
-            .then(data => data)
-    });
+    let coords = {};
+    try {
+
+        coords = yield call(() => {
+            return getLocation()
+                .then(data => data)
+        });
+    } catch (error) {
+        console.log('error in getLocation');
+    }
     try {
         const data = yield call(() => {
-            return fetchWeather(payload.name, coords.longitude, coords.latitude)
+            return fetchWeather(payload.payload.name, coords.longitude, coords.latitude)
                 .then(data => data)
         });
         const defaultCity = {
@@ -96,11 +102,9 @@ function* addNewCity(data) {
             icon: data.weather[0].icon,
             isLoading: false
         };
-        console.log('newCity = ', newCity);
         yield put(addCitySucceeded(newCity));
 
     } catch (error) {
-        console.log('error in addNewCity saga');
         yield put(deleteCity(newCity));
         alert('cannot add such city');
     }
