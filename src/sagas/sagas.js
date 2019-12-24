@@ -1,6 +1,6 @@
 import {put, takeEvery, all, call} from 'redux-saga/effects'
 
-import {fetchCity, fetchCityFailed, fetchCitySucceeded, updateWeather} from "../actions/FetchCity";
+import {fetchCity, fetchCityFailed, fetchCitySucceeded, updateWeather, updateGeoSucceeded} from "../actions/FetchCity";
 import {addCity, addCitySucceeded, addCityFailed, addCityStarted} from "../actions/AddCity";
 import {deleteCity} from "../actions/DeleteCity";
 
@@ -15,6 +15,42 @@ export function* helloSaga() {
 export function* watchGetWeather() {
     console.log('get weather saga watches')
     yield takeEvery('GET_WEATHER', getWeather);
+}
+
+export function* watchUpdateGeo() {
+    console.log('get weather saga watches')
+    yield takeEvery('UPDATE_GEO', updateGeo);
+}
+
+function* updateGeo(payload) {
+    debugger;
+    const coords = yield call(() => {
+        return getLocation()
+            .then(data => data)
+    });
+    try {
+        const data = yield call(() => {
+            return fetchWeather(payload.name, coords.longitude, coords.latitude)
+                .then(data => data)
+        });
+        const defaultCity = {
+            temp: data.main.temp,
+            name: data.name,
+            pressure: data.main.pressure,
+            humidity: data.main.humidity,
+            wind: data.wind.speed,
+            icon: data.weather[0].icon,
+            isLoading: false,
+            longitude: coords.longitude,
+            latitude: coords.latitude
+        };
+        console.log('defaultCity = ', defaultCity);
+        yield put(updateGeoSucceeded(defaultCity));
+
+    } catch (error) {
+        console.log('error in updateGeo');
+    }
+
 }
 
 
@@ -35,8 +71,6 @@ async function fetchWeather(city, longitude, latitude) {
     console.log("fetching url = ", url);
     let response = await fetch(url);
     const data = await response.json();
-    console.log('reply data = ', data);
-    console.log('data.cod = ', data.cod);
     if (data.cod === 200) {
         console.log('fetch success');
         return Promise.resolve(data);
@@ -51,7 +85,6 @@ export function* watchAddNewCity() {
 
 function* addNewCity(data) {
     const cityName = data.payload.name;
-    console.log('addNewCity saga is adding new city:', cityName, 'payload = ', data.payload);
     let time = Date.now();
     let newCity = {
         timeAdded: time,
@@ -88,8 +121,6 @@ function* getWeather(action) {
     const longitude = action.payload.longitude;
     const latitude = action.payload.latitude;
     const time = city.timeAdded;
-    console.log('getweather saga: fetching weather for city ', JSON.stringify(city));
-    debugger;
     let updatedCity = {};
     if (city.name) {
         yield put(fetchCity(city));
@@ -112,11 +143,22 @@ function* getWeather(action) {
             icon: data.weather[0].icon,
             isLoading: false
         };
-        console.log('getweather saga: fetched weather for city ', JSON.stringify(updatedCity));
         yield put(fetchCitySucceeded(updatedCity));
 
     } catch (error) {
-        console.log('getweather saga: error while fetching weather for city ', JSON.stringify(city));
         yield put(fetchCityFailed(city));
     }
+}
+
+async function getLocation() {
+    debugger;
+    return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+            position => resolve({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            }),
+            error => reject(error),
+        );
+    });
 }
