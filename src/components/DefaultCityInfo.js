@@ -29,7 +29,7 @@ class ConnectedDefaultCityInfo extends React.Component {
                 <form onSubmit={this.submitHandler}>
                     <button>update geolocation</button>
                 </form>
-                <LocationWeatherInfo city={this.props.defaultCity.name} latitude={this.props.defaultCity.latitude}
+                <LocationWeatherInfo city={this.props.defaultCity} latitude={this.props.defaultCity.latitude}
                                      longitude={this.props.defaultCity.longitude}/>
             </div>
         );

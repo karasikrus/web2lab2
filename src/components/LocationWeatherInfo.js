@@ -31,12 +31,7 @@ class ConnectedLocationWeatherInfo extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.city.isLoading !== this.props.city.isLoading) {
-            console.log('aaa');
-            this.setState({
-                isLoading: this.props.city.isLoading
-            })
-        }
+            console.log('new state for city: ', this.props.city.name, ' = ', this.props);
     }
 
 
