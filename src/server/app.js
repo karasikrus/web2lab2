@@ -5,7 +5,7 @@ var app = express();
 var request = require('request');
 
 var pgp = require("pg-promise")(/*options*/);
-var db = pgp("postgres://xsnhszrr:zwgWkC...@balarama.db.elephantsql.com:5432/xsnhszrr ");
+var db = pgp("postgres://xsnhszrr:zwgWkCogMRFkyetzCKBV_1EF_kzbWuEF@balarama.db.elephantsql.com:5432/xsnhszrr");
 
 global.fetch = require("node-fetch");
 
@@ -18,7 +18,7 @@ app.get('/weather', async (req, res)  => {
 });
 
 app.get('/weather/coordinates', async (req, res) =>{
-    return fetchCoords(req.query.long, req.query.lat, (resp)=>{res.status(200).send(resp)});
+    return fetchCoords(req.query.lon, req.query.lat, (resp)=>{res.status(200).send(resp)});
 });
 
 app.get('/favourites', async (req, res) =>{
@@ -53,7 +53,7 @@ app.listen(3003, function () {
 const ApiKey = '982553b8d730dcb96e93d24aa490d4fe';
 
 async function fetchCity(cityName, handler){
-    let url = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + ApiKey;
+    let url = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + ApiKey + '&units=metric';
     request.get(url, function (error, response, body) {
         console.log('statusCode:', response && response.statusCode);
         handler(body);

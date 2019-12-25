@@ -2,18 +2,16 @@ import {createStore, applyMiddleware} from "redux";
 import createSagaMiddleware from 'redux-saga';
 
 import rootReducer from "./reducers/Root";
-import { watchGetWeather, watchAddNewCity, watchUpdateGeo } from "./sagas/sagas";
+import {watchGetWeather, watchAddNewCity, watchUpdateGeo, watchDeleteCity, watchFetchCities} from "./sagas/sagas";
 
 const sagaMiddleware = createSagaMiddleware();
 
-const persistedState = localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState'))
-    : {
+const persistedState = {
         defaultCity: {
             name: 'санкт-петербург',
             latitude: undefined,
             longitude: undefined
         },
-        aaa: {},
         cities: []
     };
 const store = createStore(
@@ -21,11 +19,11 @@ const store = createStore(
     persistedState,
     applyMiddleware(sagaMiddleware)
 );
-store.subscribe(() => {
-    localStorage.setItem('reduxState', JSON.stringify(store.getState()))
-});
+
 sagaMiddleware.run(watchGetWeather);
 sagaMiddleware.run(watchAddNewCity);
 sagaMiddleware.run(watchUpdateGeo);
+sagaMiddleware.run(watchDeleteCity);
+sagaMiddleware.run(watchFetchCities);
 
 export default store;

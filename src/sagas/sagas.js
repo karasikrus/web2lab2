@@ -58,13 +58,13 @@ async function fetchWeather(city, longitude, latitude) {
     if (city === undefined && longitude === undefined && latitude === undefined) {
         return null;
     }
-    let url = new URL(ApiUrl);
-    url.searchParams.append('appid', ApiKey);
-    url.searchParams.append('units', 'metric');
+    let url;
     if (longitude && latitude) {
+        url = new URL( '/weather/coordinates');
         url.searchParams.append('lon', longitude);
         url.searchParams.append('lat', latitude);
     } else {
+        url = new URL( '/weather');
         url.searchParams.append('q', city);
     }
     let response = await fetch(url);
@@ -80,7 +80,7 @@ export function* watchAddNewCity() {
     yield takeEvery('ADD_CITY', addNewCity);
 }
 
-function* addNewCity(data) {
+function* addNewCity(data) { //change
     const cityName = data.payload.name;
     let time = Date.now();
     let newCity = {
@@ -103,7 +103,12 @@ function* addNewCity(data) {
             icon: data.weather[0].icon,
             isLoading: false
         };
-        yield put(addCitySucceeded(newCity));
+        let url = '/favourites?name=' + newCity.name + '&timeAdded=' + newCity.timeAdded;
+        return fetch(url, {
+            method: 'post'
+        })
+            .then(yield put(addCitySucceeded(newCity)));
+
 
     } catch (error) {
         yield put(deleteCity(newCity));
@@ -160,3 +165,36 @@ async function getLocation() {
         );
     });
 }
+export function* watchFetchCities(){
+    yield takeEvery('FETCH_CITIES', fetchCities);
+}
+
+
+function* fetchCities(){
+    let url = '/favourites';
+    const data = yield fetch(url)
+        .then(data => data)
+    yield data.forEach(
+        city => put(addCityStarted(city))
+    );
+    yield data.forEach(
+        city => put(fetchCity(city))
+    );
+    yield data.forEach(
+        city => put(addCitySucceeded(city))
+    )
+}
+
+export function* watchDeleteCity(){
+    yield takeEvery('DELETE_CITY', deleteCityFromServer);
+}
+
+function* deleteCityFromServer(data){
+    const city = data.payload;
+    let url = '/favourites?name=' + city.name + '&timeAdded=' + city.timeAdded;
+    return fetch(url, {
+        method: 'delete'
+    })
+        .then(yield put(deleteCity(city)));
+}
+//add delete city
