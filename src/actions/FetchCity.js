@@ -1,4 +1,4 @@
-import {FETCH_CITY, FETCH_CITY_SUCCEEDED, FETCH_CITY_FAILED, GET_WEATHER, UPDATE_GEO, UPDATE_GEO_SUCCEEDED} from "./ActionTypes";
+import {FETCH_CITY, FETCH_CITY_SUCCEEDED, FETCH_CITY_FAILED, GET_WEATHER, UPDATE_GEO, UPDATE_GEO_SUCCEEDED, FETCH_CITIES} from "./ActionTypes";
 
 export function fetchCity(payload) {
     return {type: FETCH_CITY, payload}
@@ -17,4 +17,7 @@ export function updateGeo(payload) {
 }
 export function updateGeoSucceeded(payload) {
     return {type: UPDATE_GEO_SUCCEEDED, payload}
+}
+export function fetchCities() {
+    return {type: FETCH_CITIES}
 }

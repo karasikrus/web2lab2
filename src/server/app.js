@@ -66,5 +66,5 @@ async function fetchCoords(longitude, latitude, handler){
     request.get(url, function (error, response, body) {
         console.log('statusCode:', response && response.statusCode);
         handler(body);
-    });
+});
 }

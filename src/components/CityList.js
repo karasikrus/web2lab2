@@ -4,15 +4,16 @@ import DeleteCity from "./DeleteCity";
 import AddCity from "./AddCity";
 import {connect} from "react-redux";
 import {addCity} from "../actions/AddCity";
-import {deleteCity} from "../actions/DeleteCity";
-import {updateWeather} from "../actions/FetchCity";
+import {deleteCityFromServer} from "../actions/DeleteCity";
+import {updateWeather, fetchCities} from "../actions/FetchCity";
 import '../styles/CityList.css'
 
 function mapDispatchToProps(dispatch) {
     return {
         addCity: city => dispatch(addCity(city)),
-        deleteCity: city => dispatch(deleteCity(city)),
-        updateWeather: city => dispatch(updateWeather(city))
+        deleteCity: city => dispatch(deleteCityFromServer(city)),
+        updateWeather: city => dispatch(updateWeather(city)),
+        fetchCities: () => dispatch(fetchCities())
     };
 }
 
@@ -39,6 +40,10 @@ class ConnectedCityList extends React.Component {
         this.props.deleteCity(city);
     }
 
+    fetchCities = () => {
+        this.props.fetchCities();
+    }
+
     formatCities = (cities) => {
         return cities.map((city) => {
             return <li key={city.timeAdded}>
@@ -50,10 +55,7 @@ class ConnectedCityList extends React.Component {
     };
 
     componentDidMount() {
-        this.props.cities.map((city) => {
-            this.updateWeather({city: city});
-            return null;
-        })
+       fetchCities();
     }
 
 

@@ -186,7 +186,7 @@ function* fetchCities(){
 }
 
 export function* watchDeleteCity(){
-    yield takeEvery('DELETE_CITY', deleteCityFromServer);
+    yield takeEvery('DELETE_CITY_FROM_SERVER', deleteCityFromServer);
 }
 
 function* deleteCityFromServer(data){
