@@ -7,25 +7,33 @@ var request = require('request');
 var pgp = require("pg-promise")(/*options*/);
 var db = pgp("postgres://xsnhszrr:zwgWkCogMRFkyetzCKBV_1EF_kzbWuEF@balarama.db.elephantsql.com:5432/xsnhszrr");
 
+var cors = require('cors');
+
 global.fetch = require("node-fetch");
+
+app.use(cors());
 
 app.get('/', function (req, res) {
     res.send('Hello World!');
 });
 
 app.get('/weather', async (req, res)  => {
+    console.log('fetching... req = ', req.query);
     return fetchCity(req.query.city, (resp)=>{res.status(200).send(resp)});
 });
 
 app.get('/weather/coordinates', async (req, res) =>{
+    console.log('fetching coords... req = ', req.query);
     return fetchCoords(req.query.lon, req.query.lat, (resp)=>{res.status(200).send(resp)});
 });
 
 app.get('/favourites', async (req, res) =>{
+    console.log('getting favourites... req = ', req.query);
     db.many("SELECT * FROM cities;").then((data)=>{res.send(data);})
 });
 
 app.post('/favourites', async (req, res) => {
+    console.log('adding favourite... req = ', req.query);
     fetchCity(req.query.name, function(response){
         console.log(response);
         if(response){
@@ -39,6 +47,7 @@ app.post('/favourites', async (req, res) => {
 });
 
 app.delete('/favourites', function (req, res) {
+    console.log('deleting... req = ', req.query);
     db.none('Delete from cities where timeAdded = $1', req.query.timeAdded).then(
         ()=>res.status(200).send()
     ).catch( (error) =>{
@@ -62,7 +71,7 @@ async function fetchCity(cityName, handler){
 
 async function fetchCoords(longitude, latitude, handler){
     console.log(longitude, latitude);
-    let url = 'https://api.openweathermap.org/data/2.5/weather?lat=' + latitude +  '&lon=' + longitude + '&appid=' + ApiKey;
+    let url = 'https://api.openweathermap.org/data/2.5/weather?lat=' + latitude +  '&lon=' + longitude + '&appid=' + ApiKey + '&units=metric';
     request.get(url, function (error, response, body) {
         console.log('statusCode:', response && response.statusCode);
         handler(body);

@@ -5,8 +5,7 @@ import {addCitySucceeded, addCityStarted} from "../actions/AddCity";
 import {deleteCity} from "../actions/DeleteCity";
 import {notification} from "antd";
 
-const ApiKey = '982553b8d730dcb96e93d24aa490d4fe';
-const ApiUrl = 'https://api.openweathermap.org/data/2.5/weather';
+
 
 
 
@@ -60,12 +59,12 @@ async function fetchWeather(city, longitude, latitude) {
     }
     let url;
     if (longitude && latitude) {
-        url = new URL( '/weather/coordinates');
+        url = new URL( 'http://localhost:3003/weather/coordinates');
         url.searchParams.append('lon', longitude);
         url.searchParams.append('lat', latitude);
     } else {
-        url = new URL( '/weather');
-        url.searchParams.append('q', city);
+        url = new URL( 'http://localhost:3003/weather');
+        url.searchParams.append('name', city);
     }
     let response = await fetch(url);
     const data = await response.json();
@@ -103,7 +102,7 @@ function* addNewCity(data) { //change
             icon: data.weather[0].icon,
             isLoading: false
         };
-        let url = '/favourites?name=' + newCity.name + '&timeAdded=' + newCity.timeAdded;
+        let url = 'http://localhost:3003/favourites?name=' + newCity.name + '&timeAdded=' + newCity.timeAdded;
         return fetch(url, {
             method: 'post'
         })
@@ -171,7 +170,7 @@ export function* watchFetchCities(){
 
 
 function* fetchCities(){
-    let url = '/favourites';
+    let url = 'http://localhost:3003/favourites';
     const data = yield fetch(url)
         .then(data => data)
     yield data.forEach(
@@ -191,10 +190,9 @@ export function* watchDeleteCity(){
 
 function* deleteCityFromServer(data){
     const city = data.payload;
-    let url = '/favourites?name=' + city.name + '&timeAdded=' + city.timeAdded;
+    let url = 'http://localhost:3003/favourites?name=' + city.name + '&timeAdded=' + city.timeAdded;
     return fetch(url, {
         method: 'delete'
     })
         .then(yield put(deleteCity(city)));
 }
-//add delete city
