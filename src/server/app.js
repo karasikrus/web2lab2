@@ -36,8 +36,10 @@ app.post('/favourites', async (req, res) => {
     console.log('adding favourite... req = ', req.query);
     fetchCity(req.query.name, function(response){
         console.log(response);
+
         if(response){
-            db.none('Insert into Cities(timeAdded, name) values($1, $2)',  [req.query.timeAdded, req.query.name]).then(result => {
+            db.none("INSERT INTO Cities(timeAdded, name) VALUES($1, $2)",  [req.query.timeAdded, req.query.name])
+                .then(result => {
                 res.status(200).send(response);
             }).catch((error) => {
                 res.status(400).send("Error occurred");
