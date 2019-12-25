@@ -4,13 +4,17 @@
   "private": true,
   "dependencies": {
     "antd": "^3.26.4",
+    "express": "^4.17.1",
+    "pg-promise": "^10.3.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-redux": "^7.1.3",
     "react-scripts": "3.2.0",
     "redux": "^4.0.4",
     "redux-saga": "^1.1.3",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.2",
+    "node-fetch": "latest",
+    "request": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
