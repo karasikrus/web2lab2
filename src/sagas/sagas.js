@@ -1,4 +1,4 @@
-import {put, takeEvery, call} from 'redux-saga/effects'
+import {put, takeEvery, all, call} from 'redux-saga/effects'
 
 import {fetchCity, fetchCityFailed, fetchCitySucceeded, updateGeoSucceeded} from "../actions/FetchCity";
 import {addCitySucceeded, addCityStarted} from "../actions/AddCity";
@@ -171,17 +171,16 @@ export function* watchFetchCities(){
 
 function* fetchCities(){
     let url = 'http://localhost:3003/favourites';
-    const data = yield fetch(url)
-        .then(data => data)
-    yield data.forEach(
-        city => put(addCityStarted(city))
-    );
-    yield data.forEach(
-        city => put(fetchCity(city))
-    );
-    yield data.forEach(
-        city => put(addCitySucceeded(city))
-    )
+    console.log('fetching favourites...');
+    const data = yield call(fetch,url);
+    const cities = yield call([data, data.json]);
+    yield all(cities.flatMap(
+        city => [
+            put(addCityStarted(city)),
+            put(fetchCity(city)),
+            put(addCitySucceeded(city))
+        ]
+    ));
 }
 
 export function* watchDeleteCity(){

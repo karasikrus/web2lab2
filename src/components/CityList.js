@@ -41,6 +41,7 @@ class ConnectedCityList extends React.Component {
     }
 
     fetchCities = () => {
+        console.log('dispatching fetchCities action...');
         this.props.fetchCities();
     }
 
@@ -55,7 +56,8 @@ class ConnectedCityList extends React.Component {
     };
 
     componentDidMount() {
-       fetchCities();
+        console.log('mounted, fetching cities...');
+       this.fetchCities();
     }
 
 
