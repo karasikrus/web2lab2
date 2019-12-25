@@ -19,7 +19,7 @@ app.get('/', function (req, res) {
 
 app.get('/weather', async (req, res)  => {
     console.log('fetching... req = ', req.query);
-    return fetchCity(req.query.city, (resp)=>{res.status(200).send(resp)});
+    return fetchCity(req.query.name, (resp)=>{res.status(200).send(resp)});
 });
 
 app.get('/weather/coordinates', async (req, res) =>{
@@ -63,6 +63,7 @@ const ApiKey = '982553b8d730dcb96e93d24aa490d4fe';
 
 async function fetchCity(cityName, handler){
     let url = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + ApiKey + '&units=metric';
+    console.log('trying url =', url);
     request.get(url, function (error, response, body) {
         console.log('statusCode:', response && response.statusCode);
         handler(body);
