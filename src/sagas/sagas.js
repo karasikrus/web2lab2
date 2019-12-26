@@ -52,12 +52,9 @@ async function fetchWeather(city, longitude, latitude) {
     }
     let url;
     if (longitude && latitude) {
-        url = new URL('http://localhost:3003/weather/coordinates');
-        url.searchParams.append('lon', longitude);
-        url.searchParams.append('lat', latitude);
+        url = '/weather/coordinates?lon=' + longitude + '&lat=' + latitude;
     } else {
-        url = new URL('http://localhost:3003/weather');
-        url.searchParams.append('name', city);
+        url = '/weather?name=' + city;
     }
     let response = await fetch(url);
     const data = await response.json();
@@ -77,7 +74,7 @@ function* addNewCity(data) { //change
     const cityName = data.payload.name;
     const isAdded = data.payload.isAdded;
     let time;
-    if(data.payload.timeAdded){
+    if (data.payload.timeAdded) {
         console.log('same time');
         time = data.payload.timeAdded;
     } else {
@@ -105,7 +102,7 @@ function* addNewCity(data) { //change
             isLoading: false
         };
         if (!isAdded) {
-            let url = 'http://localhost:3003/favourites?name=' + newCity.name + '&timeAdded=' + newCity.timeAdded;
+            let url = '/favourites?name=' + newCity.name + '&timeAdded=' + newCity.timeAdded;
             return fetch(url, {
                 method: 'post'
             })
@@ -124,39 +121,6 @@ function* addNewCity(data) { //change
     }
 }
 
-function* getWeather(action) {
-    const city = action.payload.city;
-    const longitude = action.payload.longitude;
-    const latitude = action.payload.latitude;
-    const time = city.timeAdded;
-    let updatedCity = {};
-    if (city.name) {
-        yield put(fetchCity(city));
-    }
-    try {
-        if (city.name === undefined && longitude === undefined && latitude === undefined) {
-            return null;
-        }
-        const data = yield call(() => {
-            return fetchWeather(city.name, longitude, latitude)
-                .then(data => data)
-        });
-        updatedCity = {
-            temp: data.main.temp,
-            name: data.name,
-            timeAdded: time,
-            pressure: data.main.pressure,
-            humidity: data.main.humidity,
-            wind: data.wind.speed,
-            icon: data.weather[0].icon,
-            isLoading: false
-        };
-        yield put(fetchCitySucceeded(updatedCity));
-
-    } catch (error) {
-        yield put(fetchCityFailed(city));
-    }
-}
 
 async function getLocation() {
     return new Promise((resolve, reject) => {
@@ -176,7 +140,7 @@ export function* watchFetchCities() {
 
 
 function* fetchCities() {
-    let url = 'http://localhost:3003/favourites';
+    let url = '/favourites';
     console.log('fetching favourites...');
     const data = yield call(fetch, url);
     const cities = yield call([data, data.json]);
@@ -196,7 +160,7 @@ export function* watchDeleteCity() {
 
 function* deleteCityFromServer(data) {
     const city = data.payload;
-    let url = 'http://localhost:3003/favourites?name=' + city.name + '&timeAdded=' + city.timeAdded;
+    let url = '/favourites?name=' + city.name + '&timeAdded=' + city.timeAdded;
     return fetch(url, {
         method: 'delete'
     })
