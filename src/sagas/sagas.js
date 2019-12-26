@@ -1,17 +1,10 @@
 import {put, takeEvery, all, call} from 'redux-saga/effects'
 
 import {fetchCity, fetchCityFailed, fetchCitySucceeded, updateGeoSucceeded} from "../actions/FetchCity";
-import {addCitySucceeded, addCityStarted} from "../actions/AddCity";
+import {addCitySucceeded, addCityStarted, addCity} from "../actions/AddCity";
 import {deleteCity} from "../actions/DeleteCity";
 import {notification} from "antd";
 
-
-
-
-
-export function* watchGetWeather() {
-    yield takeEvery('GET_WEATHER', getWeather);
-}
 
 export function* watchUpdateGeo() {
     yield takeEvery('UPDATE_GEO', updateGeo);
@@ -59,11 +52,11 @@ async function fetchWeather(city, longitude, latitude) {
     }
     let url;
     if (longitude && latitude) {
-        url = new URL( 'http://localhost:3003/weather/coordinates');
+        url = new URL('http://localhost:3003/weather/coordinates');
         url.searchParams.append('lon', longitude);
         url.searchParams.append('lat', latitude);
     } else {
-        url = new URL( 'http://localhost:3003/weather');
+        url = new URL('http://localhost:3003/weather');
         url.searchParams.append('name', city);
     }
     let response = await fetch(url);
@@ -80,8 +73,17 @@ export function* watchAddNewCity() {
 }
 
 function* addNewCity(data) { //change
+    console.log('addNewCity payload = ', JSON.stringify(data.payload));
     const cityName = data.payload.name;
-    let time = Date.now();
+    const isAdded = data.payload.isAdded;
+    let time;
+    if(data.payload.timeAdded){
+        console.log('same time');
+        time = data.payload.timeAdded;
+    } else {
+        console.log('new time');
+        time = Date.now();
+    }
     let newCity = {
         timeAdded: time,
         isLoading: true
@@ -102,18 +104,21 @@ function* addNewCity(data) { //change
             icon: data.weather[0].icon,
             isLoading: false
         };
-        let url = 'http://localhost:3003/favourites?name=' + newCity.name + '&timeAdded=' + newCity.timeAdded;
-        return fetch(url, {
-            method: 'post'
-        })
-            .then(yield put(addCitySucceeded(newCity)));
-
+        if (!isAdded) {
+            let url = 'http://localhost:3003/favourites?name=' + newCity.name + '&timeAdded=' + newCity.timeAdded;
+            return fetch(url, {
+                method: 'post'
+            })
+                .then(yield put(addCitySucceeded(newCity)));
+        } else {
+            yield put(addCitySucceeded(newCity));
+        }
 
     } catch (error) {
         yield put(deleteCity(newCity));
         notification.error({
             message: `Cannot add city ${cityName}`,
-            description:'There is no such city in database',
+            description: 'There is no such city in database',
             duration: 0
         });
     }
@@ -164,30 +169,32 @@ async function getLocation() {
         );
     });
 }
-export function* watchFetchCities(){
+
+export function* watchFetchCities() {
     yield takeEvery('FETCH_CITIES', fetchCities);
 }
 
 
-function* fetchCities(){
+function* fetchCities() {
     let url = 'http://localhost:3003/favourites';
     console.log('fetching favourites...');
-    const data = yield call(fetch,url);
+    const data = yield call(fetch, url);
     const cities = yield call([data, data.json]);
+    console.log('loaded favourites are: ', JSON.stringify(cities));
+    cities.flatMap(city => city.isAdded = true);
     yield all(cities.flatMap(
         city => [
-            put(addCityStarted(city)),
-            put(fetchCity(city)),
-            put(addCitySucceeded(city))
+            console.log('city in a flatMap = ', city),
+            put(addCity(city)),
         ]
     ));
 }
 
-export function* watchDeleteCity(){
+export function* watchDeleteCity() {
     yield takeEvery('DELETE_CITY_FROM_SERVER', deleteCityFromServer);
 }
 
-function* deleteCityFromServer(data){
+function* deleteCityFromServer(data) {
     const city = data.payload;
     let url = 'http://localhost:3003/favourites?name=' + city.name + '&timeAdded=' + city.timeAdded;
     return fetch(url, {

@@ -28,6 +28,7 @@ function rootReducer(state = initialState, action) {
             });
         }
         case ADD_CITY_STARTED: {
+            console.log('reducer ADD_CITY_STARTED with ', action.payload);
             return Object.assign({}, state, {
                 cities: state.cities.concat(action.payload)
             });

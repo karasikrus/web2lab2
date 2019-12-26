@@ -34,23 +34,22 @@ app.get('/favourites', async (req, res) =>{
 
 app.post('/favourites', async (req, res) => {
     console.log('adding favourite... req = ', req.query);
-    fetchCity(req.query.name, function(response){
-        console.log(response);
 
-        if(response){
-            db.none("INSERT INTO Cities(timeAdded, name) VALUES($1, $2)",  [req.query.timeAdded, req.query.name])
+
+            db.none('INSERT INTO Cities("timeAdded", name) VALUES($1, $2)',  [req.query.timeAdded, req.query.name])
                 .then(result => {
-                res.status(200).send(response);
+                res.status(200).send(result);
             }).catch((error) => {
+                console.log(error);
                 res.status(400).send("Error occurred");
             });
-        }
-    });
+
+    
 });
 
 app.delete('/favourites', function (req, res) {
     console.log('deleting... req = ', req.query);
-    db.none('Delete from cities where timeAdded = $1', req.query.timeAdded).then(
+    db.none('Delete from cities where "timeAdded" = $1', req.query.timeAdded).then(
         ()=>res.status(200).send()
     ).catch( (error) =>{
         res.status(400).send("There is no such city");
