@@ -44,7 +44,7 @@ app.post('/favourites', async (req, res) => {
                 res.status(400).send("Error occurred");
             });
 
-    
+
 });
 
 app.delete('/favourites', function (req, res) {

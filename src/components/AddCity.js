@@ -1,18 +1,19 @@
 import React from 'react';
-class AddCity extends React.Component{
+
+class AddCity extends React.Component {
 
     state = {
         city: undefined
     };
 
-    addCity = (e) =>{
+    addCity = (e) => {
         e.preventDefault();
-        this.props.addCity(e.target[0].value);
+        this.props.addCity(e.target[0].value.replace(',', ''));
         e.target[0].value = '';
     };
 
     render() {
-        return(
+        return (
             <div className={'addCity'}>
                 <form onSubmit={this.addCity}>
                     <input placeholder={'Type the city here'}/>
@@ -23,4 +24,5 @@ class AddCity extends React.Component{
     }
 
 }
+
 export default AddCity
