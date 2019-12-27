@@ -5,7 +5,7 @@ var app = express();
 var request = require('request');
 
 var pgp = require("pg-promise")(/*options*/);
-var db = pgp("postgres://xsnhszrr:zwgWkCogMRFkyetzCKBV_1EF_kzbWuEF@balarama.db.elephantsql.com:5432/xsnhszrr");
+var db = pgp("postgres://nmahxyjo:JYYPO0t3Byx6gy7YWCWtd0CBsvNCnXu1@rogue.db.elephantsql.com:5432/nmahxyjo");
 
 
 global.fetch = require("node-fetch");
@@ -34,7 +34,7 @@ app.get('/weather/coordinates', async (req, res) => {
 
 app.get('/favourites', async (req, res) => {
     console.log('getting favourites... req = ', req.query);
-    db.many("SELECT * FROM cities;").then((data) => {
+    db.any("SELECT * FROM cities;").then((data) => {
         res.send(data);
     })
 });

@@ -10,7 +10,8 @@ const persistedState = {
         defaultCity: {
             name: 'санкт-петербург',
             latitude: undefined,
-            longitude: undefined
+            longitude: undefined,
+            isLoading: false,
         },
         cities: []
     };
