@@ -108,3 +108,19 @@ test("should render LocationWeatherInfo with weather", () => {
     expect(toJson(tree)).toMatchSnapshot();
 });
 
+test("should render LocationWeatherInfo with weather for main city", () => {
+    const tree = shallow(<LocationWeatherInfo city={{
+        "temp": 0.58,
+        "name": "Kolomyagi",
+        "pressure": 1013,
+        "humidity": 86,
+        "wind": 3,
+        "icon": "04n",
+        "isLoading": false,
+        "longitude": 30.2557549,
+        "latitude": 60.02116389999999
+    }}/>);
+    expect(toJson(tree)).toMatchSnapshot();
+});
+
+
